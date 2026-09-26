@@ -164,7 +164,7 @@ export const BuyerDashboard: React.FC<BuyerDashboardProps> = ({
               </h3>
             </div>
             <p className="text-xs text-slate-500 mt-0.5">
-              Ranked objectively based on transit distance, certified AI grade, price per kg, and lot availability
+              Ranked objectively based on transit distance, certified AGMARK grade, price per kg, and lot availability
             </p>
           </div>
 

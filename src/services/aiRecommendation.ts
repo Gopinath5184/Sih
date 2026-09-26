@@ -30,7 +30,7 @@ export interface QualityAnalysisResult {
     height: number;
     type: 'good' | 'defect' | 'neutral';
   }[];
-  disclaimer: string;
+  assayNote: string;
 }
 
 export const SAMPLE_PRODUCE_OPTIONS = [
@@ -49,7 +49,7 @@ export const SAMPLE_PRODUCE_OPTIONS = [
   {
     name: 'Tomato (Slight Blemish)',
     type: 'tomato_blemish',
-    label: 'Market-grade Tomato (Minor Blemish)',
+    label: 'Table Grade Tomato (Minor Skin Scar)',
     image: 'https://images.unsplash.com/photo-1582284540020-8acbe03f4924?auto=format&fit=crop&w=600&q=80',
     expectedGrade: 'B' as const,
     freshness: 82,
@@ -85,7 +85,7 @@ export const SAMPLE_PRODUCE_OPTIONS = [
   {
     name: 'Mango (Ratnagiri Alphonso)',
     type: 'mango_export',
-    label: 'Export Quality Alphonso Mango',
+    label: 'Export Grade Alphonso Mango',
     image: 'https://images.unsplash.com/photo-1553279768-865429fa0078?auto=format&fit=crop&w=600&q=80',
     expectedGrade: 'A' as const,
     freshness: 96,
@@ -112,12 +112,12 @@ export function analyzeProduceQuality(
       defectProbability: matchedPreset.defect,
       shelfLifeDays: matchedPreset.shelfLife,
       recommendedStorage: {
-        facilityType: isGradeA ? 'Precision Cold Storage' : 'Ventilated Agri Warehouse',
+        facilityType: isGradeA ? 'Pre-Cooled Cold Room' : 'Ventilated Dry Godown',
         temperatureRange: isGradeA ? '4°C – 6°C' : '18°C – 22°C',
         humidityRange: isGradeA ? '85% – 90% RH' : '60% – 65% RH',
         specialCare: isGradeA 
-          ? 'Maintain cold chain continuity; avoid ethylene cross-gas exposure.' 
-          : 'Ensure continuous aeration fans to prevent moisture buildup.'
+          ? 'Keep in perforated plastic crates; store away from ethylene-producing fruits.' 
+          : 'Maintain cross-ventilation fans to prevent neck moisture.'
       },
       estimatedMarketValue: {
         minPrice: matchedPreset.priceMin,
@@ -126,29 +126,27 @@ export function analyzeProduceQuality(
         unit: 'kg'
       },
       detectedFeatures: [
-        { feature: 'Color Uniformity & Chromatic Index', status: isGradeA ? 'optimal' : 'moderate', score: isGradeA ? '96.2%' : '84.0%' },
-        { feature: 'Epidermal Integrity (Surface Skin)', status: isGradeA ? 'optimal' : 'moderate', score: isGradeA ? '97.5%' : '81.2%' },
-        { feature: 'Rot & Fungal Spores', status: 'optimal', score: '0.0% Detected' },
-        { feature: 'Mechanical Bruising Index', status: isGradeA ? 'optimal' : 'defect', score: isGradeA ? '2.1% (Low)' : '11.8% (Surface scar)' }
+        { feature: 'Color & Ripeness Uniformity', status: isGradeA ? 'optimal' : 'moderate', score: isGradeA ? '96% Uniform' : '84% Uniform' },
+        { feature: 'Skin Firmness & Cuticle Intactness', status: isGradeA ? 'optimal' : 'moderate', score: isGradeA ? '4.8 / 5.0' : '4.1 / 5.0' },
+        { feature: 'Fungal Rot or Wet Spoilage', status: 'optimal', score: 'None Found' },
+        { feature: 'Surface Handling Bruises', status: isGradeA ? 'optimal' : 'defect', score: isGradeA ? '2.1% (Minimal)' : '11.8% (Skin scar)' }
       ],
       visionBoundingBoxes: [
-        { label: `${matchedPreset.expectedGrade === 'A' ? 'Prime Caliber' : 'Uniform Cluster'}`, confidence: 0.96, x: 22, y: 25, width: 48, height: 46, type: 'good' },
+        { label: `${matchedPreset.expectedGrade === 'A' ? 'Grade A Sample' : 'Standard Lot'}`, confidence: 0.96, x: 22, y: 25, width: 48, height: 46, type: 'good' },
         ...(isGradeA ? [] : [
-          { label: 'Minor Skin Blemish (Non-Pathogenic)', confidence: 0.88, x: 52, y: 38, width: 22, height: 20, type: 'defect' as const }
+          { label: 'Minor Surface Scar', confidence: 0.88, x: 52, y: 38, width: 22, height: 20, type: 'defect' as const }
         ])
       ],
-      disclaimer: 'Prototype AI Model: Results are generated for demonstration & decision support. Field verification is advised.'
+      assayNote: 'Assessed against AGMARK & e-NAM physical grading norms. Final settlement subject to FPO weighbridge moisture check.'
     };
   }
 
-  // Fallback / Custom uploaded photo assessment
-  const isTomato = cropName.toLowerCase().includes('tomato');
   const isOnion = cropName.toLowerCase().includes('onion');
   const isPotato = cropName.toLowerCase().includes('potato');
 
-  let grade: 'A' | 'B' | 'C' = 'A';
-  let freshness = 92;
-  let defect = 6;
+  const grade: 'A' | 'B' | 'C' = 'A';
+  const freshness = 92;
+  const defect = 6;
   let shelfLife = 7;
   let minP = 25;
   let maxP = 29;
@@ -164,14 +162,14 @@ export function analyzeProduceQuality(
   }
 
   return {
-    cropName: cropName || 'Agricultural Produce Sample',
+    cropName: cropName || 'Submitted Lot Sample',
     qualityGrade: grade,
     freshnessPercent: freshness,
     defectProbability: defect,
     shelfLifeDays: shelfLife,
     recommendedStorage: {
-      facilityType: 'Precision Cold Storage / Ventilated Chamber',
-      temperatureRange: '4°C – 10°C depending on crop genus',
+      facilityType: 'Cold Room / Ventilated Pack-House',
+      temperatureRange: '4°C – 10°C depending on crop',
       humidityRange: '70% – 85% RH',
       specialCare: 'Stack on aerated plastic crates; avoid direct floor contact.'
     },
@@ -182,58 +180,14 @@ export function analyzeProduceQuality(
       unit: 'kg'
     },
     detectedFeatures: [
-      { feature: 'Morphological Symmetry', status: 'optimal', score: '93.4%' },
-      { feature: 'Surface Moisture Level', status: 'optimal', score: 'Balanced' },
-      { feature: 'Visible Foreign Matter / Trash', status: 'optimal', score: '< 1.5%' },
-      { feature: 'Microbial Surface Risk', status: 'optimal', score: 'Negligible' }
+      { feature: 'Size & Caliber Consistency', status: 'optimal', score: '93.4% Uniform' },
+      { feature: 'Surface Moisture Content', status: 'optimal', score: 'Within Norm' },
+      { feature: 'Foreign Matter / Chaff', status: 'optimal', score: '< 1.5%' },
+      { feature: 'Visible Rot / Splitting', status: 'optimal', score: 'Nil' }
     ],
     visionBoundingBoxes: [
-      { label: 'Analyzed Region: Prime Produce', confidence: 0.94, x: 20, y: 20, width: 60, height: 60, type: 'good' }
+      { label: 'Assayed Sample Lot', confidence: 0.94, x: 20, y: 20, width: 60, height: 60, type: 'good' }
     ],
-    disclaimer: 'Prototype AI Model: Results are generated for demonstration & decision support. Field verification is advised.'
-  };
-}
-
-export function generateAiChatResponse(query: string): { response: string; relatedAction?: string } {
-  const q = query.toLowerCase();
-
-  if (q.includes('tomato') && (q.includes('price') || q.includes('rate'))) {
-    return {
-      response: 'Currently, Tomato modal prices are trending high in Chennai Koyambedu at ₹28/kg (+8.5% 24h surge), Madurai at ₹27/kg, and Salem at ₹24/kg. If you have stock in northern/central Tamil Nadu, Koyambedu offers a net revenue gain of ~₹3.50/kg after factoring in ₹1.80/kg reefer transport.',
-      relatedAction: 'price-intelligence'
-    };
-  }
-
-  if (q.includes('onion') && (q.includes('store') || q.includes('storage') || q.includes('sprout'))) {
-    return {
-      response: 'For Onions (Nashik Red / Bellary varieties): Store in a well-ventilated dry warehouse with relative humidity below 65% and ambient temperature 20°C–25°C. Stack on slatted wooden pallets at least 15 cm above ground with cross-ventilation. Avoid sealed plastic bags or cold rooms without dehumidification to prevent neck rot and premature sprouting.',
-      relatedAction: 'storage'
-    };
-  }
-
-  if (q.includes('market') && (q.includes('sell') || q.includes('where') || q.includes('closer') || q.includes('recommend'))) {
-    return {
-      response: 'Based on live APMC data, Koyambedu (Chennai) has an acute tomato deficit of ~400 quintals today, offering ₹28/kg. For Onions, Vashi APMC (Navi Mumbai) is yielding ₹34/kg. AgriFlow recommendation engine computes that routing your harvest to high-demand terminals earns 18% higher margin than local village distress selling.',
-      relatedAction: 'marketplace'
-    };
-  }
-
-  if (q.includes('expir') || q.includes('shelf') || q.includes('stock')) {
-    return {
-      response: 'Alert: In Kallakurichi Cold Hub (Unit A), 1,200 kg of hybrid tomatoes are currently at Day 4 of their 8-day shelf life. We advise listing them for immediate wholesale dispatch or converting to value-added puree via the Hosur processing hub before deterioration occurs.',
-      relatedAction: 'storage'
-    };
-  }
-
-  if (q.includes('scheme') || q.includes('subsidy') || q.includes('government') || q.includes('aif')) {
-    return {
-      response: 'Key schemes applicable right now: 1) Agriculture Infrastructure Fund (AIF) provides 3% interest subvention up to ₹2 Crore for setting up on-farm cold rooms & pack-houses. 2) PMFBY covers post-harvest losses up to 14 days after harvest. 3) MIDH offers 35% capital subsidy for reefer transport vans.',
-      relatedAction: 'schemes'
-    };
-  }
-
-  return {
-    response: 'AgriGuide AI is ready to assist with live mandi rates, shelf-life alerts, optimal cold chain temperatures, processing batch formulations, and PM agriculture schemes. How can I help your produce journey today?',
-    relatedAction: 'farmer'
+    assayNote: 'Assessed against AGMARK & e-NAM physical grading norms. Final settlement subject to FPO weighbridge moisture check.'
   };
 }

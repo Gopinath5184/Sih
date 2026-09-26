@@ -56,11 +56,11 @@ export const INITIAL_PRODUCE: Produce[] = [
         status: 'completed'
       },
       {
-        stage: 'AI Quality Assessment',
+        stage: 'AGMARK Lot Grading & Assay',
         timestamp: '20 Sep 2026, 02:40 PM',
-        location: 'AgriFlow Smart Inspection Station #2',
-        handler: 'AgriVision Computer Vision Suite v2.4',
-        note: 'AI Score: 92% Freshness, 6% Surface Defect, Firmness Index 4.8/5.0. Certified Grade A.',
+        location: 'Dharmapuri FPO Assay Bench #2',
+        handler: 'M. Prakash (Certified Grader)',
+        note: 'Assay Result: 92% Freshness, 6% Surface Blemish, Firmness 4.8/5.0. Certified Grade A.',
         quality: 'Certified Grade A',
         status: 'completed'
       },
@@ -77,8 +77,8 @@ export const INITIAL_PRODUCE: Produce[] = [
         stage: 'Market Allocation / Sale',
         timestamp: 'Pending (Scheduled 23 Sep)',
         location: 'Chennai Koyambedu Terminal',
-        handler: 'Smart Price Match Engine',
-        note: 'Recommended for Chennai Koyambedu Mandi (+₹4/kg premium over local market)',
+        handler: 'Mandi Trade Desk',
+        note: 'Allocated for Chennai Koyambedu Mandi (+₹4/kg rate advantage over local market)',
         quality: 'Pending',
         status: 'pending'
       }
@@ -128,16 +128,16 @@ export const INITIAL_PRODUCE: Produce[] = [
         timestamp: '18 Sep 2026, 08:00 AM',
         location: 'Niphad Village, Nashik',
         handler: 'Sanjay B. Patil',
-        note: 'Cured under sunlight for 48 hours for peel hardening',
+        note: 'Cured under sunlight for 48 hours for outer skin hardening',
         quality: 'Uniform Curing',
         status: 'completed'
       },
       {
-        stage: 'AI Quality Assessment',
+        stage: 'Moisture & Grade Assay',
         timestamp: '19 Sep 2026, 10:30 AM',
         location: 'Lasalgaon Inward Center',
-        handler: 'AgriVision Computer Vision',
-        note: 'Grade A. Moisture content 13.8%, zero fungal sporulation detected.',
+        handler: 'Lasalgaon Assay Lab',
+        note: 'Grade A. Moisture content 13.8%, zero neck rot detected.',
         quality: 'Grade A',
         status: 'completed'
       },

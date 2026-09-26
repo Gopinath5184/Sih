@@ -8,8 +8,6 @@ import { Sidebar } from './components/layout/Sidebar';
 import { Footer } from './components/layout/Footer';
 import { NotificationPanel } from './components/common/NotificationPanel';
 import { RoleSwitcherModal } from './components/common/RoleSwitcherModal';
-import { AgriGuideAssistant } from './components/ai/AgriGuideAssistant';
-import { SihDemoWalkthrough } from './components/demo/SihDemoWalkthrough';
 import { ToastContainer, ToastMessage } from './components/common/Toast';
 
 // Pages
@@ -31,7 +29,6 @@ import { AuthPage } from './pages/AuthPage';
 
 export function App() {
   const [currentPage, setCurrentPage] = useState<string>('landing');
-  const [isSihDemoOpen, setIsSihDemoOpen] = useState<boolean>(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState<boolean>(false);
   const [isRoleSwitcherOpen, setIsRoleSwitcherOpen] = useState<boolean>(false);
   const [activeTraceProduceId, setActiveTraceProduceId] = useState<string>('AGR-2026-004582');
@@ -47,6 +44,7 @@ export function App() {
   const [notifications, setNotifications] = useState(stateService.getNotifications());
   const [buyerOrders, setBuyerOrders] = useState(stateService.getBuyerOrders());
   const [currentUser, setCurrentUser] = useState(stateService.getCurrentUser());
+  const [isAuthenticated, setIsAuthenticated] = useState(stateService.isAuthenticated());
 
   const showToast = (title: string, message: string, type: 'success' | 'info' | 'warning' = 'success') => {
     const id = `toast-${Date.now()}-${Math.random()}`;
@@ -68,6 +66,7 @@ export function App() {
       setNotifications(stateService.getNotifications());
       setBuyerOrders(stateService.getBuyerOrders());
       setCurrentUser(stateService.getCurrentUser());
+      setIsAuthenticated(stateService.isAuthenticated());
     });
 
     return () => unsubscribe();
@@ -85,29 +84,47 @@ export function App() {
     handleNavigate('traceability');
   };
 
+  const navigateToRoleHome = (role: UserRole) => {
+    if (role === 'farmer') handleNavigate('farmer');
+    else if (role === 'fpo') handleNavigate('fpo');
+    else if (role === 'processor') handleNavigate('processing');
+    else if (role === 'transporter') handleNavigate('transport');
+    else if (role === 'buyer') handleNavigate('buyer');
+    else if (role === 'admin' || role === 'government') handleNavigate('admin');
+  };
+
   const handleRoleChanged = (newRole: UserRole) => {
     stateService.switchUserRole(newRole);
-    showToast('Role Switched', `Now operating as ${newRole.toUpperCase()} stakeholder.`, 'info');
-    if (newRole === 'farmer') handleNavigate('farmer');
-    else if (newRole === 'fpo') handleNavigate('fpo');
-    else if (newRole === 'processor') handleNavigate('processing');
-    else if (newRole === 'transporter') handleNavigate('transport');
-    else if (newRole === 'buyer') handleNavigate('buyer');
-    else if (newRole === 'admin' || newRole === 'government') handleNavigate('admin');
+    const updatedUser = stateService.getCurrentUser();
+    showToast('Workspace Switched', `Signed in as ${updatedUser.name} (${newRole.toUpperCase()}).`, 'info');
+    navigateToRoleHome(newRole);
+  };
+
+  const handleLoginSuccess = (role: UserRole) => {
+    const updatedUser = stateService.getCurrentUser();
+    showToast('Signed In', `Welcome back, ${updatedUser.name}.`, 'success');
+    navigateToRoleHome(role);
+  };
+
+  const handleLogout = () => {
+    stateService.logoutUser();
+    showToast('Signed Out', 'You have signed out of your workspace.', 'info');
+    handleNavigate('auth');
   };
 
   const isDashboardLayout = currentPage !== 'landing' && currentPage !== 'auth';
 
   return (
-    <div className="min-h-screen bg-[#faf9f5] text-slate-900 flex flex-col font-sans selection:bg-agri-200 selection:text-agri-950">
+    <div className="min-h-screen bg-[#f6f4ee] text-slate-900 flex flex-col font-sans selection:bg-agri-200 selection:text-agri-950">
       {/* Top Global Navigation Bar */}
       <Navbar
         currentPage={currentPage}
         onNavigate={handleNavigate}
-        onOpenSihDemo={() => setIsSihDemoOpen(true)}
         onOpenNotifications={() => setIsNotificationsOpen(true)}
         onOpenRoleSwitcher={() => setIsRoleSwitcherOpen(true)}
+        onLogout={handleLogout}
         currentUser={currentUser}
+        isAuthenticated={isAuthenticated}
         unreadNotificationsCount={unreadCount}
       />
 
@@ -129,7 +146,6 @@ export function App() {
           {currentPage === 'landing' && (
             <LandingPage
               onNavigate={handleNavigate}
-              onOpenSihDemo={() => setIsSihDemoOpen(true)}
               onSelectRole={handleRoleChanged}
             />
           )}
@@ -240,7 +256,7 @@ export function App() {
 
           {currentPage === 'auth' && (
             <AuthPage
-              onLoginSuccess={handleRoleChanged}
+              onLoginSuccess={handleLoginSuccess}
               onNavigate={handleNavigate}
             />
           )}
@@ -248,13 +264,7 @@ export function App() {
       </div>
 
       {/* Global Footer */}
-      <Footer
-        onNavigate={handleNavigate}
-        onOpenSihDemo={() => setIsSihDemoOpen(true)}
-      />
-
-      {/* Floating AgriGuide AI Assistant */}
-      <AgriGuideAssistant onNavigate={handleNavigate} />
+      <Footer onNavigate={handleNavigate} />
 
       {/* Slide-over Notifications Center */}
       <NotificationPanel
@@ -270,13 +280,6 @@ export function App() {
         onClose={() => setIsRoleSwitcherOpen(false)}
         currentRole={currentUser.role}
         onRoleChanged={handleRoleChanged}
-      />
-
-      {/* 9-Step Interactive SIH Demo Walkthrough Modal */}
-      <SihDemoWalkthrough
-        isOpen={isSihDemoOpen}
-        onClose={() => setIsSihDemoOpen(false)}
-        onNavigateToScreen={handleNavigate}
       />
 
       {/* Global Toast Notifications */}

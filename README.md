@@ -1,32 +1,26 @@
-# React + TypeScript + Vite
+# AgriFlow India — Farm-to-Market Supply Chain & Trade Portal
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+AgriFlow India is a digital platform for managing agricultural produce across the harvest-to-market lifecycle: FPO weighbridge intake, optical lot grading (AGMARK standards), cold-room telemetry, regional APMC mandi rate comparison, reefer dispatch, and B2B wholesale procurement.
 
-Currently, two official plugins are available:
+## Quick Start Commands
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+### 1. Install Dependencies
+```bash
+npm install
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+### 2. Start the Development Server
+```bash
+npm run dev
+```
+Then open **http://localhost:5173** in your browser.
+
+### 3. Build for Production
+```bash
+npm run build
+```
+
+### 4. Preview Production Build
+```bash
+npm run preview
+```

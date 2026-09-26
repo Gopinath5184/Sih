@@ -8,7 +8,6 @@ import {
   Eye, 
   Calendar, 
   MapPin, 
-  Sparkles, 
   CheckCircle2, 
   Clock, 
   Warehouse, 
@@ -449,14 +448,14 @@ export const ProduceManagement: React.FC<ProduceManagementProps> = ({
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="font-semibold text-slate-700 block mb-1">AI Quality Grade</label>
+                  <label className="font-semibold text-slate-700 block mb-1">AGMARK Quality Grade</label>
                   <select
                     value={formQualityGrade}
                     onChange={(e) => setFormQualityGrade(e.target.value as QualityGrade)}
                     className="w-full p-2.5 rounded-lg border border-slate-300 font-semibold"
                   >
-                    <option value="A">Grade A (Certified Premium)</option>
-                    <option value="B">Grade B (Standard Market)</option>
+                    <option value="A">Grade A (Certified Table / Export)</option>
+                    <option value="B">Grade B (Standard Mandi)</option>
                     <option value="C">Grade C (Processing / Secondary)</option>
                   </select>
                 </div>

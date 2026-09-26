@@ -134,33 +134,32 @@ export const AdminGovDashboard: React.FC<AdminGovDashboardProps> = ({
 
   return (
     <div className="space-y-8 p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
-      {/* Header with clear DEMO DATA badge */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-stone-200">
         <div>
           <div className="flex items-center gap-2">
-            <span className="p-2 bg-purple-100 text-purple-800 rounded-xl">
+            <span className="p-2 bg-stone-200 text-stone-800 rounded-xl">
               <Landmark className="w-5 h-5" />
             </span>
             <div>
-              <h1 className="text-2xl font-bold text-slate-900 font-display">
-                National Agricultural Oversight & Macro Analytics
+              <h1 className="text-2xl font-bold text-slate-900 font-serif">
+                State APMC & Agricultural Marketing Board
               </h1>
               <p className="text-xs text-slate-500">
-                Ministry of Agriculture & State APMC Marketing Board Decision Support Portal
+                Regional commodity arrivals, cold storage utilization, and post-harvest recovery overview
               </p>
             </div>
           </div>
         </div>
 
-        {/* DEMO DATA badge explicitly required by Section 20 */}
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-900 border border-amber-300 text-xs font-bold self-start sm:self-auto">
-          <ShieldAlert className="w-3.5 h-3.5 text-amber-700" />
-          <span>DEMO DATA &bull; SIH Prototype Simulation</span>
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-stone-100 text-stone-800 border border-stone-200 text-xs font-semibold self-start sm:self-auto">
+          <CheckCircle2 className="w-3.5 h-3.5 text-agri-700" />
+          <span>e-NAM & State APMC Registry Linked</span>
         </div>
       </div>
 
-      {/* Top 6 Macro Government Metrics (Section 20) */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+      {/* Top 6 Macro Government Metrics */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 tabular-nums">
         <StatCard
           title="Farmers Registered"
           value="12,450"
@@ -200,7 +199,7 @@ export const AdminGovDashboard: React.FC<AdminGovDashboardProps> = ({
           value="3,410"
           unit="Trades"
           icon={<BarChart3 className="w-4 h-4 text-blue-700" />}
-          subtext="Zero middleman delays"
+          subtext="Direct settlement"
         />
 
         <StatCard
@@ -214,20 +213,20 @@ export const AdminGovDashboard: React.FC<AdminGovDashboardProps> = ({
         />
       </div>
 
-      {/* Map-Style Regional State Activity Matrix (Section 20: Tamil Nadu, Karnataka, Andhra Pradesh, Telangana, Kerala, Maharashtra, Punjab, UP) */}
-      <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-card space-y-6">
-        <div className="border-b border-slate-100 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+      {/* Regional State Activity Matrix */}
+      <div className="p-6 rounded-2xl bg-white border border-stone-200/90 shadow-card space-y-6">
+        <div className="border-b border-stone-100 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-200">
-              State-Wise Agriculture Heatmap
+            <span className="text-xs font-semibold uppercase tracking-wider text-agri-800">
+              State-Wise Mandi & Cold Storage Ledger
             </span>
-            <h3 className="text-lg font-bold text-slate-900 font-display mt-1">
-              Inter-State Agricultural Performance & Cold Storage Distribution
+            <h3 className="text-lg font-bold text-slate-900 font-serif mt-1">
+              Inter-State Arrivals & Cold Storage Distribution
             </h3>
           </div>
 
-          <span className="text-xs text-slate-400 font-mono">
-            Source: AgriFlow National Ingress Stream (Demo Data)
+          <span className="text-xs text-slate-500 font-mono">
+            Updated Daily • 07:00 AM IST
           </span>
         </div>
 

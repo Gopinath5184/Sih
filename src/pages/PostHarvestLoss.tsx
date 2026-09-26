@@ -23,21 +23,21 @@ export const PostHarvestLoss: React.FC<PostHarvestLossProps> = ({ onNavigate }) 
       stage: '1. Harvesting Stage',
       traditionalLoss: '4.8%',
       agriflowLoss: '1.6%',
-      mitigation: 'Weather-aligned harvest scheduling via AgriGuide AI & morning picking protocols.',
+      mitigation: 'Early-morning picking protocols (below 24°C ambient) and ventilated plastic field crates.',
       saved: '3.2% Recovered'
     },
     {
       stage: '2. Handling & Sorting',
       traditionalLoss: '5.2%',
       agriflowLoss: '2.1%',
-      mitigation: 'Computer-vision grading eliminates rough handling and prevents mixing rot-damaged fruits.',
+      mitigation: 'FPO gate assay separates bruised or split fruits before bulk cold-room stacking.',
       saved: '3.1% Recovered'
     },
     {
       stage: '3. Storage & Cold Chain',
       traditionalLoss: '8.5%',
       agriflowLoss: '3.2%',
-      mitigation: 'Precision temperature/RH IoT telemetry and predictive shelf-life expiry alerts.',
+      mitigation: 'Continuous chamber temperature/RH logging and 4-day remaining shelf-life dispatch alerts.',
       saved: '5.3% Recovered'
     },
     {

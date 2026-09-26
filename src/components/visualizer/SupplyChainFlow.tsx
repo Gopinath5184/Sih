@@ -2,13 +2,12 @@ import React, { useState } from 'react';
 import { 
   Tractor, 
   Building2, 
-  Sparkles, 
+  Scale, 
   Warehouse, 
   Factory, 
   Truck, 
   ShoppingCart,
   ChevronRight,
-  Info,
   CheckCircle2
 } from 'lucide-react';
 
@@ -30,104 +29,103 @@ export const SupplyChainFlow: React.FC<{ onExploreStage?: (stageId: string) => v
   const stages: Stage[] = [
     {
       id: 'farm',
-      name: 'Farm Harvest',
-      subtitle: 'Precision Harvesting',
+      name: '1. Farm Harvest',
+      subtitle: 'Morning Picking',
       icon: <Tractor className="w-5 h-5 text-emerald-700" />,
       metric: '12,450',
-      metricLabel: 'Active Farmers',
-      description: 'Farmers register harvest lots with crop variety, maturity index, and estimated yield directly from the field.',
-      technology: 'Mobile offline sync, GPS geofencing, harvest date stamping',
-      lossMitigation: 'Reduces improper harvest timing losses by 3.2%'
+      metricLabel: 'Member Cultivators',
+      description: 'Cultivators log harvest lots with crop variety, picking date, and crate count directly from their village.',
+      technology: 'Offline-first mobile entry & village lot tagging',
+      lossMitigation: 'Cuts field heat exposure and late-picking spoilage by 3.2%'
     },
     {
       id: 'fpo',
-      name: 'Collection / FPO',
-      subtitle: 'Aggregation Hubs',
+      name: '2. FPO Weighbridge',
+      subtitle: 'Lot Aggregation',
       icon: <Building2 className="w-5 h-5 text-teal-700" />,
       metric: '328',
       metricLabel: 'Collection Centers',
-      description: 'Primary agricultural cooperative hubs aggregate smaller farm lots, issue electronic weighbridge receipts, and lot-seal produce.',
-      technology: 'Automated weighbridge integration, lot barcode labeling',
-      lossMitigation: 'Eliminates unmeasured handling spillage by 2.1%'
+      description: 'FPO centers weigh incoming crates on digital scales, deduct tare weight, and issue printed weighment slips.',
+      technology: 'Electronic weighbridge slip & QR batch label',
+      lossMitigation: 'Eliminates manual handling spillage and weight disputes by 2.1%'
     },
     {
       id: 'quality',
-      name: 'AI Quality Check',
-      subtitle: 'Computer Vision',
-      icon: <Sparkles className="w-5 h-5 text-amber-600" />,
-      metric: '98.4%',
-      metricLabel: 'Grading Accuracy',
-      description: 'Instant computer vision inspection classifies produce into Grade A, B, or C, estimating surface blemishes, defect probability, and remaining shelf life.',
-      technology: 'On-device vision neural networks, freshness index scoring',
-      lossMitigation: 'Prevents mixing diseased produce into healthy lots'
+      name: '3. Lot Grading',
+      subtitle: 'AGMARK Assay',
+      icon: <Scale className="w-5 h-5 text-amber-700" />,
+      metric: 'Grade A/B',
+      metricLabel: 'Standardized Norms',
+      description: 'Sample crates are inspected for moisture, firmness, and surface blemish percentage to issue an objective grade.',
+      technology: 'Optical sample assay & moisture meter log',
+      lossMitigation: 'Prevents mixing bruised or split produce into long-haul lots'
     },
     {
       id: 'storage',
-      name: 'Smart Storage',
-      subtitle: 'Cold Chain & Silos',
+      name: '4. Cold Rooms',
+      subtitle: 'Chamber Telemetry',
       icon: <Warehouse className="w-5 h-5 text-cyan-700" />,
       metric: '4.2°C',
-      metricLabel: 'Active Telemetry',
-      description: 'Precision temperature, relative humidity, and ethylene gas monitoring with real-time countdown alerts for approaching shelf-life limits.',
-      technology: 'IoT LoRaWAN wireless sensors, automated alert dispatch',
-      lossMitigation: 'Prevents rotting and premature sprouting by 4.8%'
+      metricLabel: 'Chamber Temp',
+      description: 'Pre-cooled cold chambers and ventilated onion godowns log hourly temperature and humidity with keeping-day alerts.',
+      technology: 'Chamber temp/RH loggers & early dispatch alerts',
+      lossMitigation: 'Prevents rot and premature bulb sprouting by 5.3%'
     },
     {
       id: 'processing',
-      name: 'Processing Hub',
-      subtitle: 'Value Addition',
+      name: '5. Processing Hub',
+      subtitle: 'Surplus Intake',
       icon: <Factory className="w-5 h-5 text-purple-700" />,
-      metric: '28.4%',
+      metric: '28.0%',
       metricLabel: 'Puree Yield',
-      description: 'Diverts surplus or Grade-B produce into value-added puree, paste, flakes, and feeds, completely eliminating cosmetic produce dumping.',
-      technology: 'Batch conversion tracking (PROC-ID), waste valorization balance',
-      lossMitigation: 'Converts 95% of surplus distress produce into shelf-stable revenue'
+      description: 'Diverts Grade-B or glut-season produce to nearby processing units for puree, paste, and dehydrated flakes.',
+      technology: 'Batch yield accounting & byproduct valorization',
+      lossMitigation: 'Recovers 94% of secondary produce that would otherwise be dumped'
     },
     {
       id: 'transport',
-      name: 'Transportation',
-      subtitle: 'Reefer Logistics',
+      name: '6. Reefer Transit',
+      subtitle: 'Insulated Fleet',
       icon: <Truck className="w-5 h-5 text-indigo-700" />,
       metric: '18',
-      metricLabel: 'Active Fleets',
-      description: 'Refrigerated transit with GPS tracking and live chamber temperature logs, ensuring unbroken cold chains directly to demand centers.',
-      technology: 'OBD-II vehicle telemetry, thermal continuous loggers',
-      lossMitigation: 'Reduces transit spoilage and heat stress by 2.5%'
+      metricLabel: 'Active Lorries',
+      description: 'Refrigerated lorries maintain 4°C–6°C along highway corridors with checkpoint updates and digital delivery receipts.',
+      technology: 'GPS route tracking & compartment temp log',
+      lossMitigation: 'Reduces highway heat shrinkage and transit bruising by 2.5%'
     },
     {
       id: 'market',
-      name: 'Market & Buyer',
-      subtitle: 'Transparent Trade',
+      name: '7. Mandi & Buyers',
+      subtitle: 'Escrow Settlement',
       icon: <ShoppingCart className="w-5 h-5 text-blue-700" />,
       metric: '₹18.4 Cr',
-      metricLabel: 'Produce Managed',
-      description: 'Direct B2B marketplace connecting farmers and FPOs with supermarket chains, institutional bulk buyers, and terminal APMC mandis.',
-      technology: 'Smart Mandi Price Arbitrage engine, Escrow payments',
-      lossMitigation: 'Eliminates 3 to 4 middleman delays, cutting terminal decay by 2.2%'
+      metricLabel: 'Settled Trade',
+      description: 'Direct wholesale orders from supermarkets, processors, and terminal APMCs with escrow-backed bank payouts.',
+      technology: 'Regional mandi rate spread calculator & escrow',
+      lossMitigation: 'Avoids multi-day auction yard delays, saving 2.2% at terminal'
     }
   ];
 
   const currentStage = stages.find((s) => s.id === selectedStageId) || stages[3];
 
   return (
-    <div className="w-full bg-white rounded-2xl border border-slate-200 shadow-card p-6 md:p-8">
+    <div className="w-full bg-white rounded-2xl border border-stone-200/90 shadow-card p-6 md:p-8">
       {/* Title */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-stone-100">
         <div>
-          <span className="text-xs font-bold uppercase tracking-wider text-agri-700 bg-agri-100 px-2.5 py-1 rounded-full">
-            Full Lifecycle Integration
+          <span className="text-xs font-semibold uppercase tracking-wider text-agri-800">
+            Crate-to-Market Custody Chain
           </span>
-          <h3 className="text-xl md:text-2xl font-bold text-slate-900 font-display mt-2">
-            The AgriFlow Produce Highway
+          <h3 className="text-xl md:text-2xl font-bold text-slate-900 font-serif mt-1">
+            How a Harvest Lot Moves Through AgriFlow
           </h3>
           <p className="text-xs md:text-sm text-slate-600 mt-1">
-            Click any milestone along the 7-stage chain to inspect real-time telemetry and loss mitigation technology
+            Select any stage below to see how weights, temperatures, and payouts are recorded along the journey
           </p>
         </div>
 
-        <div className="flex items-center gap-2 text-xs font-semibold text-agri-800 bg-agri-50 px-3 py-1.5 rounded-lg border border-agri-200/80 self-start md:self-auto">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          Live Ecosystem Status: 100% Synchronized
+        <div className="text-xs font-medium text-stone-600 bg-stone-100 px-3 py-1.5 rounded-lg border border-stone-200 self-start md:self-auto">
+          7 Recorded Custody Checkpoints
         </div>
       </div>
 
@@ -135,16 +133,16 @@ export const SupplyChainFlow: React.FC<{ onExploreStage?: (stageId: string) => v
       <div className="pt-8 pb-6 overflow-x-auto">
         <div className="min-w-[760px] relative flex items-center justify-between px-4">
           {/* Connecting Path Line */}
-          <div className="absolute left-10 right-10 top-7 h-1 bg-slate-200 z-0">
+          <div className="absolute left-10 right-10 top-7 h-0.5 bg-stone-200 z-0">
             <div 
-              className="h-full bg-gradient-to-r from-emerald-600 via-agri-600 to-blue-600 transition-all duration-500"
+              className="h-full bg-agri-700 transition-all duration-300"
               style={{
                 width: `${(stages.findIndex(s => s.id === selectedStageId) / (stages.length - 1)) * 100}%`
               }}
             />
           </div>
 
-          {stages.map((stage, idx) => {
+          {stages.map((stage) => {
             const isSelected = stage.id === selectedStageId;
             return (
               <button
@@ -153,10 +151,10 @@ export const SupplyChainFlow: React.FC<{ onExploreStage?: (stageId: string) => v
                 className="relative z-10 flex flex-col items-center group text-center focus:outline-hidden"
               >
                 <div 
-                  className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-300 ${
+                  className={`w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-200 ${
                     isSelected
-                      ? 'bg-agri-800 text-white shadow-lift ring-4 ring-agri-200 scale-110'
-                      : 'bg-white text-slate-700 border-2 border-slate-200 hover:border-agri-500 hover:scale-105'
+                      ? 'bg-[#1a4129] text-white shadow-sm ring-4 ring-agri-100'
+                      : 'bg-white text-slate-700 border border-stone-300 hover:border-agri-600'
                   }`}
                 >
                   <div className={isSelected ? 'text-white' : 'text-slate-700'}>
@@ -165,13 +163,13 @@ export const SupplyChainFlow: React.FC<{ onExploreStage?: (stageId: string) => v
                 </div>
 
                 <div className="mt-3">
-                  <span className={`text-xs font-bold block ${isSelected ? 'text-agri-900' : 'text-slate-800'}`}>
+                  <span className={`text-xs font-bold block ${isSelected ? 'text-agri-950' : 'text-slate-800'}`}>
                     {stage.name}
                   </span>
                   <span className="text-[10px] text-slate-500 block">
                     {stage.subtitle}
                   </span>
-                  <span className="mt-1 inline-block text-[10px] font-semibold text-agri-800 bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200">
+                  <span className="mt-1 inline-block text-[10px] font-semibold text-slate-700 bg-stone-100 px-2 py-0.5 rounded border border-stone-200 tabular-nums">
                     {stage.metric}
                   </span>
                 </div>
@@ -182,15 +180,15 @@ export const SupplyChainFlow: React.FC<{ onExploreStage?: (stageId: string) => v
       </div>
 
       {/* Selected Stage Deep Dive Card */}
-      <div className="mt-6 p-6 rounded-xl bg-gradient-to-br from-slate-50 to-agri-50/30 border border-slate-200/80 animate-in fade-in duration-200">
+      <div className="mt-4 p-6 rounded-xl bg-[#f6f4ee] border border-stone-200/90">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
           <div className="md:col-span-2 space-y-3">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-agri-800 bg-white px-2.5 py-0.5 rounded-md border border-slate-200">
-                Stage Detail
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-agri-900 bg-white px-2.5 py-0.5 rounded border border-stone-200">
+                Checkpoint Note
               </span>
-              <h4 className="text-lg font-bold text-slate-900 font-display">
-                {currentStage.name} &bull; {currentStage.subtitle}
+              <h4 className="text-base font-bold text-slate-900 font-serif">
+                {currentStage.name} — {currentStage.subtitle}
               </h4>
             </div>
 
@@ -198,33 +196,33 @@ export const SupplyChainFlow: React.FC<{ onExploreStage?: (stageId: string) => v
               {currentStage.description}
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs">
-              <div className="p-3 bg-white rounded-lg border border-slate-200">
-                <span className="text-slate-400 block font-medium">Underlying Technology</span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1 text-xs">
+              <div className="p-3 bg-white rounded-lg border border-stone-200">
+                <span className="text-slate-400 block font-medium">Field Record / Method</span>
                 <span className="font-semibold text-slate-800 mt-0.5 block">{currentStage.technology}</span>
               </div>
-              <div className="p-3 bg-white rounded-lg border border-emerald-200/80 bg-emerald-50/30">
-                <span className="text-emerald-700 block font-medium flex items-center gap-1">
+              <div className="p-3 bg-white rounded-lg border border-agri-200/80">
+                <span className="text-agri-800 font-medium flex items-center gap-1">
                   <CheckCircle2 className="w-3.5 h-3.5" />
-                  Post-Harvest Impact
+                  Spoilage Reduction
                 </span>
                 <span className="font-semibold text-slate-900 mt-0.5 block">{currentStage.lossMitigation}</span>
               </div>
             </div>
           </div>
 
-          <div className="p-5 bg-white rounded-xl border border-slate-200 text-center shadow-xs flex flex-col justify-between h-full">
+          <div className="p-5 bg-white rounded-xl border border-stone-200 text-center flex flex-col justify-between h-full">
             <div>
-              <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Live Platform Telemetry</p>
-              <p className="text-3xl font-extrabold text-agri-900 font-display mt-2">{currentStage.metric}</p>
+              <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Recorded Figure</p>
+              <p className="text-3xl font-bold text-agri-900 font-serif mt-2 tabular-nums">{currentStage.metric}</p>
               <p className="text-xs font-medium text-slate-600 mt-1">{currentStage.metricLabel}</p>
             </div>
 
             <button
               onClick={() => onExploreStage && onExploreStage(currentStage.id)}
-              className="mt-4 w-full py-2 px-3 rounded-lg bg-agri-800 hover:bg-agri-900 text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors"
+              className="mt-4 w-full py-2.5 px-3 rounded-lg bg-[#1a4129] hover:bg-agri-900 text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors"
             >
-              <span>Inspect {currentStage.name} Module</span>
+              <span>Open {currentStage.subtitle} Desk</span>
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>

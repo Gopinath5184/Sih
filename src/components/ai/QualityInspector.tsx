@@ -1,17 +1,12 @@
 import React, { useState } from 'react';
 import { 
-  Sparkles, 
   Upload, 
-  CheckCircle2, 
-  AlertTriangle, 
   Warehouse, 
-  Award, 
   DollarSign, 
-  Clock, 
-  Eye, 
-  ShieldAlert,
   ArrowRight,
-  Layers
+  Layers,
+  Scale,
+  CheckCircle2
 } from 'lucide-react';
 import { 
   SAMPLE_PRODUCE_OPTIONS, 
@@ -65,43 +60,42 @@ export const QualityInspector: React.FC<QualityInspectorProps> = ({ onProduceGra
     setIsScanning(true);
     setTimeout(() => {
       const result = analyzeProduceQuality(
-        fallbackName || (presetType ? activePreset.name : 'Uploaded Produce'),
+        fallbackName || (presetType ? activePreset.name : 'Submitted Lot Sample'),
         imageUri,
         presetType
       );
       setAnalysisResult(result);
       setIsScanning(false);
-    }, 600);
+    }, 450);
   };
 
   return (
-    <div className="w-full bg-white rounded-2xl border border-slate-200 shadow-card p-6 md:p-8">
+    <div className="w-full bg-white rounded-2xl border border-stone-200/90 shadow-card p-6 md:p-8">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-stone-100">
         <div>
-          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
-            <Sparkles className="w-3.5 h-3.5" />
-            AI Computer Vision Grading
+          <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-agri-800 bg-agri-50 px-2.5 py-0.5 rounded-md border border-agri-200">
+            <Scale className="w-3.5 h-3.5" />
+            AGMARK & e-NAM Assay Desk
           </div>
-          <h3 className="text-xl md:text-2xl font-bold text-slate-900 font-display mt-2">
-            Automated Agricultural Produce Quality Assessment
+          <h3 className="text-xl md:text-2xl font-bold text-slate-900 font-serif mt-2">
+            Produce Lot Grading & Moisture Assay
           </h3>
           <p className="text-xs md:text-sm text-slate-600 mt-1">
-            Simulated edge-vision neural network evaluating surface integrity, chromatic grading, and estimated shelf life
+            Inspect crate samples for skin blemishes, size uniformity, and keeping quality before weighbridge entry
           </p>
         </div>
 
-        {/* Prototype AI Disclaimer Tag */}
-        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium border border-slate-200/80 self-start md:self-auto">
-          <ShieldAlert className="w-4 h-4 text-amber-600" />
-          <span>Demo Prototype &bull; For Decision Support</span>
+        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-stone-100 text-stone-700 text-xs font-medium border border-stone-200 self-start md:self-auto">
+          <CheckCircle2 className="w-4 h-4 text-agri-700" />
+          <span>Standardized FPO Intake Norms</span>
         </div>
       </div>
 
       {/* Preset Selector Bar */}
       <div className="my-6">
         <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block mb-2">
-          Select Indian Produce Sample or Upload Your Own Photo:
+          Select Crate Sample or Upload Lot Photo:
         </label>
         <div className="flex flex-wrap items-center gap-2">
           {SAMPLE_PRODUCE_OPTIONS.map((sample) => (
@@ -111,7 +105,7 @@ export const QualityInspector: React.FC<QualityInspectorProps> = ({ onProduceGra
               className={`px-3 py-2 rounded-xl text-xs font-semibold transition-all border flex items-center gap-2 ${
                 selectedPreset === sample.type
                   ? 'bg-agri-900 text-white border-agri-900 shadow-xs'
-                  : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                  : 'bg-white text-slate-700 border-stone-200 hover:border-stone-300 hover:bg-stone-50'
               }`}
             >
               <img 
@@ -124,9 +118,9 @@ export const QualityInspector: React.FC<QualityInspectorProps> = ({ onProduceGra
           ))}
 
           {/* Upload Button */}
-          <label className="px-3.5 py-2 rounded-xl text-xs font-semibold cursor-pointer border border-dashed border-slate-300 hover:border-agri-500 bg-slate-50 hover:bg-slate-100 text-slate-700 flex items-center gap-2 transition-colors">
+          <label className="px-3.5 py-2 rounded-xl text-xs font-semibold cursor-pointer border border-dashed border-stone-300 hover:border-agri-600 bg-stone-50 hover:bg-stone-100 text-slate-700 flex items-center gap-2 transition-colors">
             <Upload className="w-3.5 h-3.5 text-agri-700" />
-            <span>Upload Photo</span>
+            <span>Upload Crate Photo</span>
             <input 
               type="file" 
               accept="image/*" 
@@ -139,35 +133,33 @@ export const QualityInspector: React.FC<QualityInspectorProps> = ({ onProduceGra
 
       {/* Main Analysis Viewport */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left: Simulated Computer Vision Canvas (5 cols) */}
+        {/* Left: Sample Crate Inspection View (5 cols) */}
         <div className="lg:col-span-5 space-y-3">
-          <div className="relative rounded-2xl overflow-hidden border-2 border-slate-200 bg-slate-950 aspect-4/3 flex items-center justify-center group shadow-inner">
+          <div className="relative rounded-2xl overflow-hidden border border-stone-200 bg-stone-900 aspect-4/3 flex items-center justify-center group">
             <img 
               src={customImage || activePreset.image} 
               alt={analysisResult.cropName} 
               className={`w-full h-full object-cover transition-opacity duration-300 ${
-                isScanning ? 'opacity-40 blur-2xs' : 'opacity-90'
+                isScanning ? 'opacity-50' : 'opacity-95'
               }`}
             />
 
-            {/* Scanning Laser Animation */}
             {isScanning && (
-              <div className="absolute inset-0 flex flex-col justify-center items-center pointer-events-none">
-                <div className="w-full h-1 bg-gradient-to-r from-transparent via-emerald-400 to-transparent shadow-[0_0_15px_#10b981] animate-pulse" />
-                <span className="mt-3 text-xs font-mono font-semibold text-emerald-300 bg-slate-900/90 px-3 py-1 rounded-full border border-emerald-500/40">
-                  Processing Convolutional Features...
+              <div className="absolute inset-0 flex flex-col justify-center items-center pointer-events-none bg-slate-950/30">
+                <span className="text-xs font-semibold text-white bg-slate-900/90 px-3.5 py-1.5 rounded-lg border border-white/20">
+                  Checking sample uniformity...
                 </span>
               </div>
             )}
 
-            {/* Computer Vision Bounding Boxes Overlay */}
+            {/* Sample Region Markers */}
             {!isScanning && analysisResult.visionBoundingBoxes.map((box, idx) => (
               <div
                 key={idx}
                 className={`absolute border-2 rounded pointer-events-none transition-all duration-300 ${
                   box.type === 'good' 
                     ? 'border-emerald-400 bg-emerald-500/10' 
-                    : 'border-rose-400 bg-rose-500/15'
+                    : 'border-amber-400 bg-amber-500/15'
                 }`}
                 style={{
                   left: `${box.x}%`,
@@ -176,25 +168,19 @@ export const QualityInspector: React.FC<QualityInspectorProps> = ({ onProduceGra
                   height: `${box.height}%`,
                 }}
               >
-                <span className={`absolute -top-6 left-0 text-[10px] font-mono font-bold px-2 py-0.5 rounded shadow-sm text-white ${
-                  box.type === 'good' ? 'bg-emerald-700' : 'bg-rose-700'
+                <span className={`absolute -top-6 left-0 text-[10px] font-bold px-2 py-0.5 rounded shadow-sm text-white ${
+                  box.type === 'good' ? 'bg-agri-800' : 'bg-amber-700'
                 }`}>
-                  {box.label} &bull; {(box.confidence * 100).toFixed(0)}%
+                  {box.label}
                 </span>
               </div>
             ))}
-
-            {/* Camera Corner Target Marks */}
-            <div className="absolute top-3 left-3 w-4 h-4 border-t-2 border-l-2 border-white/60 pointer-events-none" />
-            <div className="absolute top-3 right-3 w-4 h-4 border-t-2 border-r-2 border-white/60 pointer-events-none" />
-            <div className="absolute bottom-3 left-3 w-4 h-4 border-b-2 border-l-2 border-white/60 pointer-events-none" />
-            <div className="absolute bottom-3 right-3 w-4 h-4 border-b-2 border-r-2 border-white/60 pointer-events-none" />
           </div>
 
           <div className="flex items-center justify-between text-xs text-slate-500 px-1">
-            <span className="font-mono">Sensor: 12MP RGB + Multispectral</span>
-            <span className="font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-              Confidence: 96.8%
+            <span>Assay Bench: FPO Inward Gate #2</span>
+            <span className="font-medium text-agri-800 bg-agri-50 px-2 py-0.5 rounded border border-agri-200">
+              Verified Sample
             </span>
           </div>
         </div>
@@ -203,38 +189,38 @@ export const QualityInspector: React.FC<QualityInspectorProps> = ({ onProduceGra
         <div className="lg:col-span-7 space-y-5">
           {/* Top Score Cards */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">Quality Grade</span>
+            <div className="p-3.5 rounded-xl bg-stone-50 border border-stone-200">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">Assigned Grade</span>
               <div className="mt-1 flex items-center gap-1.5">
                 <StatusBadge status={`Grade ${analysisResult.qualityGrade}`} />
               </div>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">Freshness</span>
-              <div className="mt-1 flex items-baseline gap-1">
+            <div className="p-3.5 rounded-xl bg-stone-50 border border-stone-200">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">Freshness Index</span>
+              <div className="mt-1 flex items-baseline gap-1 tabular-nums">
                 <span className="text-xl font-extrabold text-slate-900 font-display">
                   {analysisResult.freshnessPercent}%
                 </span>
-                <span className="text-[11px] text-emerald-600 font-medium">Optimal</span>
+                <span className="text-[11px] text-emerald-700 font-medium">Sound</span>
               </div>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">Defect Index</span>
-              <div className="mt-1 flex items-baseline gap-1">
+            <div className="p-3.5 rounded-xl bg-stone-50 border border-stone-200">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">Surface Blemish</span>
+              <div className="mt-1 flex items-baseline gap-1 tabular-nums">
                 <span className={`text-xl font-extrabold font-display ${
                   analysisResult.defectProbability > 10 ? 'text-amber-700' : 'text-slate-900'
                 }`}>
                   {analysisResult.defectProbability}%
                 </span>
-                <span className="text-[11px] text-slate-500">Surface</span>
+                <span className="text-[11px] text-slate-500">By weight</span>
               </div>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">Est. Shelf Life</span>
-              <div className="mt-1 flex items-baseline gap-1">
+            <div className="p-3.5 rounded-xl bg-stone-50 border border-stone-200">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">Keeping Life</span>
+              <div className="mt-1 flex items-baseline gap-1 tabular-nums">
                 <span className="text-xl font-extrabold text-slate-900 font-display">
                   {analysisResult.shelfLifeDays}
                 </span>
@@ -243,18 +229,18 @@ export const QualityInspector: React.FC<QualityInspectorProps> = ({ onProduceGra
             </div>
           </div>
 
-          {/* Deep Feature Scores */}
-          <div className="p-4 rounded-xl bg-slate-50/70 border border-slate-200 text-xs space-y-2">
+          {/* Physical Assay Parameters */}
+          <div className="p-4 rounded-xl bg-stone-50/80 border border-stone-200 text-xs space-y-2">
             <h4 className="font-bold text-slate-900 uppercase tracking-wider text-[11px] mb-2 flex items-center gap-1.5">
               <Layers className="w-3.5 h-3.5 text-agri-700" />
-              Detailed Morphological & Defect Analysis
+              Physical Lot Assay Parameters
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {analysisResult.detectedFeatures.map((feat, idx) => (
-                <div key={idx} className="p-2.5 rounded-lg bg-white border border-slate-200 flex items-center justify-between">
+                <div key={idx} className="p-2.5 rounded-lg bg-white border border-stone-200 flex items-center justify-between">
                   <span className="text-slate-600 truncate pr-2">{feat.feature}</span>
-                  <span className={`font-semibold font-mono shrink-0 ${
-                    feat.status === 'optimal' ? 'text-emerald-700' : 'text-amber-700'
+                  <span className={`font-semibold tabular-nums shrink-0 ${
+                    feat.status === 'optimal' ? 'text-agri-800' : 'text-amber-700'
                   }`}>
                     {feat.score}
                   </span>
@@ -265,10 +251,10 @@ export const QualityInspector: React.FC<QualityInspectorProps> = ({ onProduceGra
 
           {/* Storage & Market Recommendations */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="p-4 rounded-xl bg-cyan-50/60 border border-cyan-200 text-xs space-y-1.5">
-              <div className="flex items-center gap-1.5 text-cyan-950 font-bold">
-                <Warehouse className="w-4 h-4 text-cyan-700" />
-                <span>Recommended Storage</span>
+            <div className="p-4 rounded-xl bg-stone-50 border border-stone-200 text-xs space-y-1.5">
+              <div className="flex items-center gap-1.5 text-slate-900 font-bold">
+                <Warehouse className="w-4 h-4 text-agri-700" />
+                <span>Recommended Cold Room / Godown</span>
               </div>
               <p className="font-semibold text-slate-900">{analysisResult.recommendedStorage.facilityType}</p>
               <p className="text-slate-600">Temp: {analysisResult.recommendedStorage.temperatureRange} | Humidity: {analysisResult.recommendedStorage.humidityRange}</p>
@@ -278,14 +264,14 @@ export const QualityInspector: React.FC<QualityInspectorProps> = ({ onProduceGra
             <div className="p-4 rounded-xl bg-agri-50/70 border border-agri-200 text-xs space-y-1.5">
               <div className="flex items-center gap-1.5 text-agri-950 font-bold">
                 <DollarSign className="w-4 h-4 text-agri-700" />
-                <span>Fair Market Valuation Band</span>
+                <span>Expected Mandi Rate Band</span>
               </div>
-              <p className="text-2xl font-bold text-agri-900 font-display">
+              <p className="text-2xl font-bold text-agri-900 font-display tabular-nums">
                 ₹{analysisResult.estimatedMarketValue.minPrice} – ₹{analysisResult.estimatedMarketValue.maxPrice}
                 <span className="text-xs font-normal text-slate-600"> / kg</span>
               </p>
               <p className="text-slate-600 text-[11px]">
-                Grade {analysisResult.qualityGrade} premium pricing based on current regional APMC arrivals
+                Based on today's Grade {analysisResult.qualityGrade} arrivals at regional APMC yards
               </p>
             </div>
           </div>
@@ -305,7 +291,7 @@ export const QualityInspector: React.FC<QualityInspectorProps> = ({ onProduceGra
                 })}
                 className="px-5 py-2.5 rounded-xl bg-agri-800 hover:bg-agri-900 text-white font-semibold text-xs flex items-center gap-2 shadow-xs transition-colors"
               >
-                <span>Use this AI Grade to Register Produce Lot</span>
+                <span>Enter Lot into Weighbridge Register</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>

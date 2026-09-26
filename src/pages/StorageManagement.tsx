@@ -8,8 +8,7 @@ import {
   Phone, 
   ArrowRight, 
   Activity,
-  Layers,
-  Sparkles
+  Layers
 } from 'lucide-react';
 import { 
   AreaChart, 

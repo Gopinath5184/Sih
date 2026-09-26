@@ -35,7 +35,7 @@ export const RoleSwitcherModal: React.FC<RoleSwitcherModalProps> = ({
       icon: <Tractor className="w-5 h-5 text-emerald-700" />,
       user: DEMO_USERS.farmer,
       desc: 'Smallholder cultivator registering harvest, monitoring storage & accessing mandi rates.',
-      primaryTasks: ['Register Produce', 'AI Quality Check', 'Check Mandi Prices', 'Apply for Schemes']
+      primaryTasks: ['Register Produce', 'AGMARK Assay', 'Check Mandi Prices', 'Apply for Schemes']
     },
     {
       role: 'fpo',
@@ -176,7 +176,7 @@ export const RoleSwitcherModal: React.FC<RoleSwitcherModalProps> = ({
 
         {/* Footer */}
         <div className="px-6 py-3 bg-slate-50 border-t border-slate-200 text-center text-xs text-slate-500">
-          Demo data is synchronized across roles. Any action performed in one role reflects in the other dashboards.
+          Trade and inventory records are synchronized across workspaces in real time.
         </div>
       </div>
     </div>

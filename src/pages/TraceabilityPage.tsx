@@ -10,7 +10,6 @@ import {
   Building2, 
   Warehouse, 
   Truck, 
-  Sparkles, 
   ShoppingCart, 
   ArrowRight,
   Download,
@@ -50,11 +49,11 @@ export const TraceabilityPage: React.FC<TraceabilityPageProps> = ({
               <QrCode className="w-5 h-5" />
             </span>
             <div>
-              <h1 className="text-2xl font-bold text-slate-900 font-display">
-                Farm-to-Fork Digital Produce Passport
+              <h1 className="text-2xl font-bold text-slate-900 font-serif">
+                Farm-to-Fork Batch Custody & QR Passport
               </h1>
               <p className="text-xs text-slate-500">
-                Verifiable custody chain tracking harvest origin, AI grading certificates, cold storage logs, and transportation telemetry
+                Verifiable custody log tracking village harvest origin, FPO weighment, AGMARK grading, and cold-chain transit
               </p>
             </div>
           </div>

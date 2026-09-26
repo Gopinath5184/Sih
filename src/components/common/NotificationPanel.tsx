@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Bell, X, Check, ArrowRight, AlertTriangle, TrendingUp, ShoppingBag, Truck, Sparkles } from 'lucide-react';
+import { Bell, X, Check, ArrowRight, AlertTriangle, TrendingUp, ShoppingBag, Truck } from 'lucide-react';
 import { NotificationItem } from '../../types';
 import { stateService } from '../../services/stateService';
 
@@ -38,7 +38,7 @@ export const NotificationPanel: React.FC<NotificationPanelProps> = ({
       case 'shipment':
         return <Truck className="w-4 h-4 text-purple-600" />;
       default:
-        return <Sparkles className="w-4 h-4 text-agri-600" />;
+        return <Bell className="w-4 h-4 text-agri-600" />;
     }
   };
 

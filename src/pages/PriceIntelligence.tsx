@@ -1,15 +1,9 @@
 import React, { useState } from 'react';
 import { 
   TrendingUp, 
-  TrendingDown, 
-  MapPin, 
   ArrowRight, 
-  Sparkles, 
   Truck, 
-  ShieldAlert, 
-  Calendar,
-  Layers,
-  BarChart3
+  Calculator
 } from 'lucide-react';
 import { 
   LineChart, 
@@ -46,7 +40,7 @@ export const PriceIntelligence: React.FC<PriceIntelligenceProps> = ({
 
   const chartData = timeframe === '7d' ? primaryRecord.trend7d : primaryRecord.trend30d;
 
-  // AI Recommendation computation for a 2,000 kg lot
+  // Net realization computation for a 2,000 kg lot
   const lotSizeKg = 2000;
   const localMandiPrice = 24; // Salem
   const bestMandiPrice = 28; // Chennai
@@ -58,18 +52,18 @@ export const PriceIntelligence: React.FC<PriceIntelligenceProps> = ({
   return (
     <div className="space-y-8 p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-stone-200">
         <div>
           <div className="flex items-center gap-2">
             <span className="p-2 bg-agri-100 text-agri-800 rounded-xl">
               <TrendingUp className="w-5 h-5" />
             </span>
             <div>
-              <h1 className="text-2xl font-bold text-slate-900 font-display">
-                APMC Mandi Price Intelligence
+              <h1 className="text-2xl font-bold text-slate-900 font-serif">
+                APMC Mandi Rate Board & Freight Calculator
               </h1>
               <p className="text-xs text-slate-500">
-                Real-time regional arrivals, price volatility tracking, and AI market arbitrage recommendations
+                Compare morning modal prices across regional terminals with round-trip lorry freight deducted
               </p>
             </div>
           </div>
@@ -83,8 +77,8 @@ export const PriceIntelligence: React.FC<PriceIntelligenceProps> = ({
               onClick={() => setSelectedCrop(crop)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
                 selectedCrop === crop
-                  ? 'bg-agri-800 text-white border-agri-800 shadow-2xs'
-                  : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                  ? 'bg-[#1a4129] text-white border-[#1a4129] shadow-2xs'
+                  : 'bg-white text-slate-700 border-stone-200 hover:bg-stone-50'
               }`}
             >
               {crop}
@@ -93,67 +87,66 @@ export const PriceIntelligence: React.FC<PriceIntelligenceProps> = ({
         </div>
       </div>
 
-      {/* AI Market Recommendation Panel (Section 11) */}
-      <div className="p-6 rounded-2xl bg-gradient-to-br from-agri-950 via-agri-900 to-slate-900 text-white shadow-lift relative overflow-hidden border border-agri-800">
-        <div className="relative z-10 space-y-4">
+      {/* Net Realization & Freight Spread Panel */}
+      <div className="p-6 rounded-2xl bg-[#163020] text-white border border-agri-900">
+        <div className="space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div className="flex items-center gap-2">
-              <div className="p-1.5 bg-amber-400 text-slate-950 rounded-lg">
-                <Sparkles className="w-4 h-4" />
+              <div className="p-1.5 bg-amber-500 text-slate-950 rounded-lg">
+                <Calculator className="w-4 h-4" />
               </div>
-              <span className="text-xs font-bold uppercase tracking-wider text-amber-300 font-display">
-                AI Market Arbitrage Opportunity
+              <span className="text-xs font-bold uppercase tracking-wider text-agri-200">
+                Regional Rate Spread & Freight Worksheet (2,000 kg Lot)
               </span>
             </div>
 
-            <div className="flex items-center gap-1.5 text-[11px] text-agri-200 bg-white/10 px-2.5 py-1 rounded-full border border-white/10">
-              <ShieldAlert className="w-3.5 h-3.5 text-amber-300" />
-              <span>Decision Support Engine &bull; Actual mandi rates may fluctuate</span>
+            <div className="text-[11px] text-stone-300 bg-white/10 px-2.5 py-1 rounded-md border border-white/10">
+              <span>Morning 07:00 AM APMC Arrival Rates</span>
             </div>
           </div>
 
-          <h3 className="text-xl sm:text-2xl font-bold font-display tracking-tight text-white">
-            "Based on current market conditions, your {lotSizeKg.toLocaleString('en-IN')} kg {selectedCrop} stock has a higher selling opportunity in Chennai Koyambedu."
+          <h3 className="text-xl sm:text-2xl font-bold font-serif tracking-tight text-white">
+            Dispatching your {lotSizeKg.toLocaleString('en-IN')} kg {selectedCrop} lot to Chennai Koyambedu yields +₹{netAdvantage.toLocaleString('en-IN')} more than local Salem Mandi after freight.
           </h3>
 
-          {/* Arbitrage Numbers Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-            <div className="p-3 rounded-xl bg-white/10 backdrop-blur-xs border border-white/10">
-              <span className="text-[11px] text-agri-200 block">Recommended Market</span>
+          {/* Worksheet Numbers Grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 tabular-nums">
+            <div className="p-3 rounded-xl bg-white/10 border border-white/10">
+              <span className="text-[11px] text-stone-300 block">Destination Terminal</span>
               <span className="text-sm font-bold text-white mt-1 block">Chennai Koyambedu</span>
-              <span className="text-[10px] text-agri-300">185 KM distance</span>
+              <span className="text-[10px] text-agri-200">185 km via NH-44</span>
             </div>
 
-            <div className="p-3 rounded-xl bg-white/10 backdrop-blur-xs border border-white/10">
-              <span className="text-[11px] text-agri-200 block">Estimated Price</span>
+            <div className="p-3 rounded-xl bg-white/10 border border-white/10">
+              <span className="text-[11px] text-stone-300 block">Modal Rate</span>
               <span className="text-base font-bold text-emerald-300 mt-1 block">₹28 / kg</span>
-              <span className="text-[10px] text-agri-300">+₹4/kg vs local Salem</span>
+              <span className="text-[10px] text-agri-200">+₹4/kg vs local Salem (₹24)</span>
             </div>
 
-            <div className="p-3 rounded-xl bg-white/10 backdrop-blur-xs border border-white/10">
-              <span className="text-[11px] text-agri-200 block">Reefer Freight Cost</span>
-              <span className="text-base font-bold text-slate-200 mt-1 block">₹3,600</span>
-              <span className="text-[10px] text-agri-300">₹1.80/kg round trip</span>
+            <div className="p-3 rounded-xl bg-white/10 border border-white/10">
+              <span className="text-[11px] text-stone-300 block">Reefer Lorry Freight</span>
+              <span className="text-base font-bold text-stone-200 mt-1 block">₹3,600</span>
+              <span className="text-[10px] text-agri-200">₹1.80/kg crate freight</span>
             </div>
 
-            <div className="p-3 rounded-xl bg-emerald-500/20 backdrop-blur-xs border border-emerald-400/30">
-              <span className="text-[11px] text-emerald-200 block font-semibold">Net Extra Revenue</span>
+            <div className="p-3 rounded-xl bg-emerald-500/20 border border-emerald-400/30">
+              <span className="text-[11px] text-emerald-200 block font-semibold">Net Gain After Freight</span>
               <span className="text-xl font-extrabold text-emerald-300 mt-0.5 block font-display">
                 +₹{netAdvantage.toLocaleString('en-IN')}
               </span>
-              <span className="text-[10px] text-emerald-200">After all transport deduction</span>
+              <span className="text-[10px] text-emerald-200">Direct bank settlement</span>
             </div>
           </div>
 
-          <div className="pt-2 flex items-center justify-between">
-            <p className="text-xs text-agri-200 max-w-xl">
-              AgriFlow computes real-time APMC arrivals, demand elasticity, and fuel freight costs to protect farmers from local glut distress sales.
+          <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <p className="text-xs text-stone-300 max-w-xl">
+              Calculated using today’s gate arrival volumes and standard FPO multi-drop reefer tariffs.
             </p>
             <button
               onClick={() => onNavigate('marketplace')}
-              className="px-4 py-2 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition-colors shadow-xs"
+              className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 transition-colors self-start sm:self-auto"
             >
-              <span>List for Chennai Buyers</span>
+              <span>List Lot for Chennai Buyers</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>

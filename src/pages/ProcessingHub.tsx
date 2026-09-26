@@ -8,7 +8,6 @@ import {
   AlertCircle, 
   ArrowRight, 
   RefreshCw, 
-  Sparkles,
   TrendingUp,
   X
 } from 'lucide-react';

@@ -35,6 +35,7 @@ class StateService {
   private notifications: NotificationItem[] = [];
   private buyerOrders: BuyerOrder[] = [];
   private currentUser: UserSession = DEMO_USERS.farmer;
+  private isLoggedIn: boolean = true;
   private listeners: Set<Listener> = new Set();
 
   constructor() {
@@ -69,6 +70,9 @@ class StateService {
 
       const u = localStorage.getItem('agriflow_user');
       this.currentUser = u ? JSON.parse(u) : DEMO_USERS.farmer;
+
+      const auth = localStorage.getItem('agriflow_logged_in');
+      this.isLoggedIn = auth !== null ? JSON.parse(auth) : true;
     } catch (e) {
       console.error('Error loading state from localStorage:', e);
       this.resetToDefaults();
@@ -86,6 +90,7 @@ class StateService {
       localStorage.setItem('agriflow_notifications', JSON.stringify(this.notifications));
       localStorage.setItem('agriflow_buyer_orders', JSON.stringify(this.buyerOrders));
       localStorage.setItem('agriflow_user', JSON.stringify(this.currentUser));
+      localStorage.setItem('agriflow_logged_in', JSON.stringify(this.isLoggedIn));
     } catch (e) {
       console.error('Error saving state to localStorage:', e);
     }
@@ -125,15 +130,15 @@ class StateService {
         location: `${produceData.location.village || 'Farm Lot'}, ${produceData.location.district}`,
         handler: produceData.farmerName,
         note: `Registered ${produceData.quantityKg} kg of ${produceData.cropVariety}. Expected price: ₹${produceData.expectedPricePerKg}/kg.`,
-        quality: `AI Assessed: Grade ${produceData.qualityGrade}`,
+        quality: `AGMARK Grade ${produceData.qualityGrade}`,
         status: 'completed'
       },
       {
         stage: 'FPO Quality Verification',
-        timestamp: 'Auto-Scheduled within 4h',
+        timestamp: 'Scheduled within 4h',
         location: `${produceData.fpoName} Inward Bay`,
         handler: 'FPO Aggregation Incharge',
-        note: 'Lot weighbridge ticket and digital QA certification',
+        note: 'Lot weighbridge ticket and moisture/grade verification',
         status: 'current'
       }
     ];
@@ -324,11 +329,47 @@ class StateService {
     return { ...this.currentUser };
   }
 
+  public isAuthenticated(): boolean {
+    return this.isLoggedIn;
+  }
+
   public switchUserRole(role: UserRole) {
     if (DEMO_USERS[role]) {
       this.currentUser = { ...DEMO_USERS[role] };
+      this.isLoggedIn = true;
       this.saveState();
     }
+  }
+
+  public loginUser(role: UserRole, customEmailOrPhone?: string) {
+    const baseUser = DEMO_USERS[role] || DEMO_USERS.farmer;
+    this.currentUser = {
+      ...baseUser,
+      ...(customEmailOrPhone
+        ? customEmailOrPhone.includes('@')
+          ? { email: customEmailOrPhone }
+          : { phone: customEmailOrPhone }
+        : {})
+    };
+    this.isLoggedIn = true;
+    this.saveState();
+  }
+
+  public registerUser(userData: UserSession) {
+    this.currentUser = { ...userData };
+    this.isLoggedIn = true;
+    this.addNotification({
+      title: `Welcome to AgriFlow, ${userData.name}`,
+      message: `Your ${userData.role.toUpperCase()} account for ${userData.location} is now active.`,
+      type: 'quality',
+      priority: 'medium'
+    });
+    this.saveState();
+  }
+
+  public logoutUser() {
+    this.isLoggedIn = false;
+    this.saveState();
   }
 
   // --- Reset to Defaults ---
@@ -342,6 +383,7 @@ class StateService {
     this.notifications = [...INITIAL_NOTIFICATIONS];
     this.buyerOrders = [...INITIAL_BUYER_ORDERS];
     this.currentUser = { ...DEMO_USERS.farmer };
+    this.isLoggedIn = true;
     this.saveState();
   }
 }
